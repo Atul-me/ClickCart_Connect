@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api/": "https://server-p0fu.onrender.com",
-      "/uploads/": "https://server-p0fu.onrender.com",
+      "/api/": "https://server-0hgd.onrender.com:10000",
+      "/uploads/": "https://server-0hgd.onrender.com:10000",
     },
   },
 });
