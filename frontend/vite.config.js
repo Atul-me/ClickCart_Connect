@@ -10,4 +10,7 @@ export default defineConfig({
       "/uploads/": "https://server-0hgd.onrender.com",
     },
   },
+  build: {
+    sourcemap: true,
+  },
 });
