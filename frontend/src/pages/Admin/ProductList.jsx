@@ -7,6 +7,7 @@ import {
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import AdminMenu from "./AdminMenu";
+import { BASE_URL } from "../../redux/constants";
 
 const ProductList = () => {
   const [image, setImage] = useState("");
@@ -52,19 +53,37 @@ const ProductList = () => {
     }
   };
 
+  // const uploadFileHandler = async (e) => {
+  //   const formData = new FormData();
+  //   formData.append("image", e.target.files[0]);
+
+  //   try {
+  //     const res = await uploadProductImage(formData).unwrap();
+  //     toast.success(res.message);
+  //     setImage(res.image);
+  //     setImageUrl(res.image);
+  //   } catch (error) {
+  //     toast.error(error?.data?.message || error.error);
+  //   }
+  // };
   const uploadFileHandler = async (e) => {
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
-
+  
     try {
       const res = await uploadProductImage(formData).unwrap();
-      toast.success(res.message);
-      setImage(res.image);
-      setImageUrl(res.image);
+      
+      if (res && res.image) {
+        toast.success(res.message);
+        setImageUrl(`${BASE_URL}${res.image}`);
+      } else {
+        toast.error("Image upload failed. Please try again.");
+      }
     } catch (error) {
       toast.error(error?.data?.message || error.error);
     }
   };
+  
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
