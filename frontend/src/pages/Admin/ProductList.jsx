@@ -75,7 +75,7 @@ const ProductList = () => {
       
       if (res && res.image) {
         toast.success(res.message);
-        setImageUrl(`${BASE_URL}${res.image}`);
+        setImageUrl(`${BASE_URL}/assets${res.image}`);
       } else {
         toast.error("Image upload failed. Please try again.");
       }
