@@ -72,10 +72,11 @@ const ProductList = () => {
   
     try {
       const res = await uploadProductImage(formData).unwrap();
+      console.log("Server Response:", res);
       
       if (res && res.image) {
         toast.success(res.message);
-        setImageUrl(`${BASE_URL}/assets${res.image}`);
+        setImageUrl(`${BASE_URL}public/assets${res.image}`);
       } else {
         toast.error("Image upload failed. Please try again.");
       }

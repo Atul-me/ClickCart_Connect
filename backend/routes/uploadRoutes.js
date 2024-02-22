@@ -1,12 +1,13 @@
 import path from "path";
 import express from "express";
 import multer from "multer";
+import { BASE_URL } from "../../frontend/src/redux/constants";
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/assets");
+    cb(null, "./public/assets");
   },
 
   filename: (req, file, cb) => {
@@ -39,7 +40,7 @@ router.post("/", (req, res) => {
     } else if (req.file) {
       res.status(200).send({
         message: "Image uploaded successfully",
-        image: `/assets/${req.file.filename}`,
+        image: `${BASE_URL}/assets/${req.file.filename}`,
       });
     } else {
       res.status(400).send({ message: "No image file provided" });
