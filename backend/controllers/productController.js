@@ -1,6 +1,6 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Product from "../models/productModel.js";
-import cloudinary from '../utils/cloudinary';
+import cloudinary from '../utils/cloudinary.js';
 
 // const addProduct = asyncHandler(async (req, res) => {
 //   try {
