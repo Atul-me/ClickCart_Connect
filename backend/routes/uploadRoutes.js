@@ -13,7 +13,9 @@ router.post("/", upload.single("image"), async (req, res) => {
       return res.status(400).send({ message: "No image file provided" });
     }
 
-    const result = await cloudinary.uploader.upload(req.file.buffer.toString("base64"));
+    const result = await cloudinary.uploader.upload(req.file.buffer.toString("base64"), {
+      folder: "../uploads", // Set your desired folder name
+    });
 
     res.status(200).send({
       message: "Image uploaded successfully",
