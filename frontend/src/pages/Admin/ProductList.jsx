@@ -66,25 +66,6 @@ const ProductList = () => {
       toast.error(error?.data?.message || error.error);
     }
   };
-  // const uploadFileHandler = async (e) => {
-  //   const formData = new FormData();
-  //   formData.append("image", e.target.files[0]);
-  
-  //   try {
-  //     const res = await uploadProductImage(formData).unwrap();
-  //     console.log("Server Response:", res);
-      
-  //     if (res && res.image) {
-  //       toast.success(res.message);
-  //       setImageUrl(`${BASE_URL}public/assets${res.image}`);
-  //     } else {
-  //       toast.error("Image upload failed. Please try again.");
-  //     }
-  //   } catch (error) {
-  //     toast.error(error?.data?.message || error.error);
-  //   }
-  // };
-  
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
