@@ -53,7 +53,7 @@ const ProductCarousel = () => {
             }) => (
               <div key={_id}>
                 <img
-                  src={`/api/products/photo/${_id}`}
+                  src={`https://server-0hgd.onrender.com/api/products/photo/${_id}`}
                   alt={name}
                   className="w-full rounded-lg object-cover h-[30rem]"
                 />

@@ -6,7 +6,7 @@ const SmallProduct = ({ product }) => {
     <div className="w-[20rem] ml-[2rem] p-3">
       <div className="relative">
         <img
-          src={`/api/products/photo/${product._id}`}
+          src={`https://server-0hgd.onrender.com/api/products/photo/${product._id}`}
           alt={product.name}
           className="h-auto rounded"
         />

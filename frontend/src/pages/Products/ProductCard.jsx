@@ -25,7 +25,7 @@ const ProductCard = ({ p }) => {
           </span>
           <img
             className="cursor-pointer w-full"
-            src={`/api/products/photo/${p._id}`}
+            src={`https://server-0hgd.onrender.com/api/products/photo/${p._id}`}
             alt={p.name}
             style={{ height: "170px", objectFit: "cover" }}
           />
