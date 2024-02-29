@@ -38,7 +38,7 @@ const Cart = () => {
                 <div key={item._id} className="flex items-enter mb-[1rem] pb-2">
                   <div className="w-[5rem] h-[5rem]">
                     <img
-                      src={item.image}
+                      src={`/api/products/photo/${item._id}`}
                       alt={item.name}
                       className="w-full h-full object-cover rounded"
                     />

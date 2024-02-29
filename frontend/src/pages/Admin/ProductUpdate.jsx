@@ -54,23 +54,23 @@ const AdminProductUpdate = () => {
     }
   }, [productData]);
 
-  const uploadFileHandler = async (e) => {
-    const formData = new FormData();
-    formData.append("image", e.target.files[0]);
-    try {
-      const res = await uploadProductImage(formData).unwrap();
-      toast.success("Item added successfully", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 2000,
-      });
-      setImage(res.image);
-    } catch (err) {
-      toast.success("Item added successfully", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 2000,
-      });
-    }
-  };
+  // const uploadFileHandler = async (e) => {
+  //   const formData = new FormData();
+  //   formData.append("image", e.target.files[0]);
+  //   try {
+  //     const res = await uploadProductImage(formData).unwrap();
+  //     toast.success("Item added successfully", {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //       autoClose: 2000,
+  //     });
+  //     setImage(res.image);
+  //   } catch (err) {
+  //     toast.success("Item added successfully", {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //       autoClose: 2000,
+  //     });
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -142,7 +142,7 @@ const AdminProductUpdate = () => {
             {image && (
               <div className="text-center">
                 <img
-                  src={image}
+                  src={URL.createObjectURL(image)}
                   alt="product"
                   className="block mx-auto w-full h-[40%]"
                 />
@@ -156,7 +156,7 @@ const AdminProductUpdate = () => {
                   type="file"
                   name="image"
                   accept="image/*"
-                  onChange={uploadFileHandler}
+                  onChange={(e) => setImage(e.target.files[0])}
                   className="text-white"
                 />
               </label>

@@ -1,74 +1,12 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import Product from "../models/productModel.js";
-import cloudinary from '../utils/cloudinary.js';
+import fs from 'fs';
 
-// const addProduct = asyncHandler(async (req, res) => {
-//   try {
-//     const { name, description, price, category, quantity, brand } = req.fields;
-
-//     // Validation
-//     switch (true) {
-//       case !name:
-//         return res.json({ error: "Name is required" });
-//       case !brand:
-//         return res.json({ error: "Brand is required" });
-//       case !description:
-//         return res.json({ error: "Description is required" });
-//       case !price:
-//         return res.json({ error: "Price is required" });
-//       case !category:
-//         return res.json({ error: "Category is required" });
-//       case !quantity:
-//         return res.json({ error: "Quantity is required" });
-//     }
-
-//     const product = new Product({ ...req.fields });
-//     await product.save();
-//     res.json(product);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(400).json(error.message);
-//   }
-// });
-
-// const updateProductDetails = asyncHandler(async (req, res) => {
-//   try {
-//     const { name, description, price, category, quantity, brand } = req.fields;
-
-//     // Validation
-//     switch (true) {
-//       case !name:
-//         return res.json({ error: "Name is required" });
-//       case !brand:
-//         return res.json({ error: "Brand is required" });
-//       case !description:
-//         return res.json({ error: "Description is required" });
-//       case !price:
-//         return res.json({ error: "Price is required" });
-//       case !category:
-//         return res.json({ error: "Category is required" });
-//       case !quantity:
-//         return res.json({ error: "Quantity is required" });
-//     }
-
-//     const product = await Product.findByIdAndUpdate(
-//       req.params.id,
-//       { ...req.fields },
-//       { new: true }
-//     );
-
-//     await product.save();
-
-//     res.json(product);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(400).json(error.message);
-//   }
-// });
 
 const addProduct = asyncHandler(async (req, res) => {
   try {
     const { name, description, price, category, quantity, brand } = req.fields;
+    const {image} = req.files;
 
     // Validation
     switch (true) {
@@ -84,16 +22,17 @@ const addProduct = asyncHandler(async (req, res) => {
         return res.json({ error: "Category is required" });
       case !quantity:
         return res.json({ error: "Quantity is required" });
+      case !image && image.size == 1000000:
+        return res.json({error: "Image size is too large"}); 
     }
 
     const product = new Product({ ...req.fields });
 
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.buffer.toString("base64"), {
-        folder: "../uploads", // Set your desired folder name
-      });
+    // console.log("22222",image.type);
 
-      product.image = result.secure_url;
+    if(image){
+      product.image.data = fs.readFileSync(image.path);
+      product.image.contentType = image.type;
     }
 
     await product.save();
@@ -107,6 +46,7 @@ const addProduct = asyncHandler(async (req, res) => {
 const updateProductDetails = asyncHandler(async (req, res) => {
   try {
     const { name, description, price, category, quantity, brand } = req.fields;
+    const {image} = req.files;
 
     // Validation
     switch (true) {
@@ -129,13 +69,9 @@ const updateProductDetails = asyncHandler(async (req, res) => {
       { ...req.fields },
       { new: true }
     );
-
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.buffer.toString("base64"), {
-        folder: "../uploads", // Set your desired folder name
-      });
-
-      product.image = result.secure_url;
+    if(image){
+      product.image.data = fs.readFileSync(image.path);
+      product.image.contentType = image.type;
     }
 
     await product.save();
@@ -156,6 +92,8 @@ const removeProduct = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+
 
 const fetchProducts = asyncHandler(async (req, res) => {
   try {
@@ -292,6 +230,20 @@ const filterProducts = asyncHandler(async (req, res) => {
   }
 });
 
+const ProductPhotoController = asyncHandler(async(req,res) => {
+  try{
+    const product = await Product.findById(req.params.id);
+    if(product.image.data){
+      res.set("Content-Type", product.image.contentType);
+      return res.status(200).send(product.image.data);
+    }
+  }
+  catch(error){
+    console.error(error);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
 export {
   addProduct,
   updateProductDetails,
@@ -303,4 +255,5 @@ export {
   fetchTopProducts,
   fetchNewProducts,
   filterProducts,
+  ProductPhotoController,
 };

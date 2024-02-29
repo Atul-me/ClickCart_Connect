@@ -2,16 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useCreateProductMutation,
-  useUploadProductImageMutation,
+  // useUploadProductImageMutation,
 } from "../../redux/api/productApiSlice";
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import AdminMenu from "./AdminMenu";
-
+// import { BASE_URL } from "../../redux/constants";
 
 const ProductList = () => {
-  const [imageFile, setImageFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -19,26 +18,40 @@ const ProductList = () => {
   const [quantity, setQuantity] = useState("");
   const [brand, setBrand] = useState("");
   const [stock, setStock] = useState(0);
+  const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
 
-  const [uploadProductImage] = useUploadProductImageMutation();
+  // const [uploadProductImage] = useUploadProductImageMutation();
   const [createProduct] = useCreateProductMutation();
   const { data: categories } = useFetchCategoriesQuery();
+
+  // const uploadFileHandler = async (e) => {
+  //   const formData = new FormData();
+  //   formData.append("image", e.target.files[0]);
+
+  //   try {
+  //     const res = await uploadProductImage(formData).unwrap();
+  //     toast.success(res.message);
+  //     setImage(res.image);
+  //     setImageUrl(res.image);
+  //   } catch (error) {
+  //     toast.error(error?.data?.message || error.error);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const productData = {
-        name,
-        description,
-        price,
-        category,
-        quantity,
-        brand,
-        countInStock: stock,
-        image: imageUrl,
-      };
+      const productData = new FormData();
+      productData.append("image", image);
+      productData.append("name", name);
+      productData.append("description", description);
+      productData.append("price", price);
+      productData.append("category", category);
+      productData.append("quantity", quantity);
+      productData.append("brand", brand);
+      productData.append("countInStock", stock);
 
       const { data } = await createProduct(productData);
 
@@ -54,57 +67,38 @@ const ProductList = () => {
     }
   };
 
-  const uploadFileHandler = async (e) => {
-    const formData = new FormData();
-    formData.append("image", e.target.files[0]);
-
-    try {
-      const { data } = await uploadProductImage(formData);
-
-      if (data.error) {
-        toast.error("Image upload failed. Try Again.");
-      } else {
-        toast.success("Image uploaded successfully");
-        setImageUrl(data.imageUrl);
-      }
-    } catch (error) {
-      toast.error(error?.data?.message || error.error);
-    }
-  };
 
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
-    <div className="flex flex-col md:flex-row">
-      <AdminMenu />
-      <div className="md:w-3/4 p-3">
-        <div className="h-12">Create Product</div>
+      <div className="flex flex-col md:flex-row">
+        <AdminMenu />
+        <div className="md:w-3/4 p-3">
+          <div className="h-12">Create Product</div>
 
-        {imageUrl && (
-          <div className="text-center">
-            <img
-              src={imageUrl}
-              alt="product"
-              className="block mx-auto max-h-[200px]"
-            />
+          {imageUrl && (
+            <div className="text-center">
+              <img
+                src={URL.createObjectURL(image)}
+                alt="product"
+                className="block mx-auto max-h-[200px]"
+              />
+            </div>
+          )}
+
+          <div className="mb-3">
+            <label className="border text-white px-4 block w-full text-center rounded-lg cursor-pointer font-bold py-11">
+              {image ? image.name : "Upload Image"}
+
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files[0])}
+                className={!image ? "hidden" : "text-white"}
+              />
+            </label>
           </div>
-        )}
-
-        <div className="mb-3">
-          <label className="border text-white px-4 block w-full text-center rounded-lg cursor-pointer font-bold py-11">
-            {imageFile ? imageFile.name : "Upload Image"}
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={(e) => {
-                setImageFile(e.target.files[0]);
-                uploadFileHandler(e);
-              }}
-              className={!imageFile ? "hidden" : "text-white"}
-            />
-          </label>
-        </div>
 
           <div className="p-3">
             <div className="flex flex-wrap">

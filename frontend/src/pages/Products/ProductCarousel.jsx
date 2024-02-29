@@ -39,7 +39,7 @@ const ProductCarousel = () => {
         >
           {products.map(
             ({
-              image,
+              // image,
               _id,
               name,
               price,
@@ -53,7 +53,7 @@ const ProductCarousel = () => {
             }) => (
               <div key={_id}>
                 <img
-                  src={image}
+                  src={`/api/products/photo/${_id}`}
                   alt={name}
                   className="w-full rounded-lg object-cover h-[30rem]"
                 />

@@ -31,7 +31,7 @@ const AllProducts = () => {
                 >
                   <div className="flex">
                     <img
-                      src={product.image}
+                      src={`/api/products/photo/${product._id}`}
                       alt={product.name}
                       className="w-[10rem] object-cover"
                     />
