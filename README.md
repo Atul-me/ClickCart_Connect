@@ -14,11 +14,11 @@ ClickCart-Connect is a modern e-commerce application built using ReactJS, NodeJS
 
 ## Live Demo
 
-Check out the live application [here]([DEMO_LINK](https://click-cart-connect.vercel.app/)).
+Check out the live application [here](https://click-cart-connect.vercel.app/).
 
 ## GitHub Repository
 
-You can find the source code on GitHub [here]([GITHUB_LINK](https://github.com/Atul-me/ClickCart_Connect.git)).
+You can find the source code on GitHub [here](https://github.com/Atul-me/ClickCart_Connect.git).
 
 ## Installation and Setup
 
