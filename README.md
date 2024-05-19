@@ -33,7 +33,7 @@ To run this project locally, follow these steps:
 ### Clone the Repository
 
 ```bash
-git clone GITHUB_LINK
+git clone https://github.com/Atul-me/ClickCart_Connect.git
 cd ClickCart-Connect
 ```
 
